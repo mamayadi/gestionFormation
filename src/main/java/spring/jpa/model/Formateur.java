@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import spring.jpa.enums.Role;
+
 @Entity
 @DiscriminatorValue("formateur")
 public class Formateur extends Personne {
@@ -19,7 +21,6 @@ public class Formateur extends Personne {
 	private List<Matiere> listMatiere;
 	@ManyToMany
 	private List<Groupe> listGroupe;
-	
 
 	public Formateur(String nom, String prenom, String username, String password) {
 		super(nom, prenom, username, password, Role.FORMATEUR);
@@ -45,4 +46,17 @@ public class Formateur extends Personne {
 	public void setListGroupe(List<Groupe> listGroupe) {
 		this.listGroupe = listGroupe;
 	}
+
+	public void addGroupe(Groupe groupe) {
+		this.listGroupe.add(groupe);
+	}
+
+	public void addMatiere(Matiere matiere) {
+		this.listMatiere.add(matiere);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
 }

@@ -46,8 +46,6 @@ public class Groupe {
 	public List<Matiere> getListMatiere() {
 		return listMatiere;
 	}
-	
-	
 
 	public void setListMatiere(List<Matiere> listMatiere) {
 		this.listMatiere = listMatiere;
@@ -56,7 +54,13 @@ public class Groupe {
 	public void addMatiere(Matiere matiere) {
 		this.listMatiere.add(matiere);
 	}
-	
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 }

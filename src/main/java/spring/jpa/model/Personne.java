@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import spring.jpa.enums.Role;
+
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE_PERSONNE")
 @DiscriminatorValue("Personne")

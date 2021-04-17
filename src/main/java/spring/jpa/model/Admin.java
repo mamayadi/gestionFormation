@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import spring.jpa.enums.Role;
+
 @Entity
 @DiscriminatorValue("admin")
 public class Admin extends Personne {

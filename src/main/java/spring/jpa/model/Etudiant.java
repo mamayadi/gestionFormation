@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import spring.jpa.enums.Role;
+
 @Entity
 @DiscriminatorValue("etudiant")
 public class Etudiant extends Personne {
@@ -19,7 +21,6 @@ public class Etudiant extends Personne {
 	private Groupe groupe;
 	@OneToMany
 	private List<Note> listNote;
-	
 
 	public Etudiant(String nom, String prenom, String username, String password) {
 		super(nom, prenom, username, password, Role.ETUDIANT);
@@ -45,4 +46,9 @@ public class Etudiant extends Personne {
 	public void setListNote(List<Note> listNote) {
 		this.listNote = listNote;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
 }

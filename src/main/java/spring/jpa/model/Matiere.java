@@ -20,7 +20,6 @@ public class Matiere {
 	private List<Seance> listSeance;
 	@OneToOne
 	private Groupe groupe;
-	
 
 	public Matiere(double volumeHoraire, String libelle) {
 		super();
@@ -71,7 +70,7 @@ public class Matiere {
 	public void setListSeance(List<Seance> listSeance) {
 		this.listSeance = listSeance;
 	}
-	
+
 	public void addSeance(Seance seance) {
 		this.listSeance.add(seance);
 	}
@@ -83,7 +82,9 @@ public class Matiere {
 	public void setGroupe(Groupe groupe) {
 		this.groupe = groupe;
 	}
-	
-	
+
+	public Long getId() {
+		return id;
+	}
 
 }
