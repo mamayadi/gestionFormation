@@ -1,9 +1,9 @@
 package spring.jpa.service;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import spring.jpa.model.Admin;
 import spring.jpa.model.Etudiant;
@@ -21,6 +21,7 @@ import spring.jpa.repository.GroupeRepository;
 import spring.jpa.repository.MatiereRepository;
 import spring.jpa.service.interfaces.AdminService;
 
+@Service
 public class AdminServiceImpl implements AdminService {
 
 	@Autowired
@@ -43,9 +44,33 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void createAdmin(Admin admin) {
-		adminRepos.save(admin);
+	public Admin createAdmin(Admin admin) {
+		return adminRepos.save(admin);
+	}
 
+	@Override
+	public List<Admin> getAdmins() {
+		return adminRepos.findAll();
+	}
+
+	@Override
+	public Admin updateAdmin(Long id, Admin admin) {
+		Admin foundedAdmin = adminRepos.findById(id).get();
+		foundedAdmin.setNom(admin.getNom());
+		foundedAdmin.setPrenom(admin.getPrenom());
+		foundedAdmin.setPassword(admin.getPassword());
+		return adminRepos.save(foundedAdmin);
+	}
+
+	@Override
+	public Admin getAdminById(Long id) {
+		return adminRepos.findById(id).get();
+	}
+
+	@Override
+	public void deleteAdmin(Long id) {
+		Admin admin= adminRepos.findById(id).get();
+		adminRepos.delete(admin);
 	}
 
 	@Override

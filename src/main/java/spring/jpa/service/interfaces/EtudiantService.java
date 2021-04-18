@@ -4,11 +4,22 @@ import java.util.List;
 
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
+import spring.jpa.model.Formateur;
 import spring.jpa.model.Matiere;
 import spring.jpa.model.Note;
 
 public interface EtudiantService {
-	public Note consulterNoteEtMoyenneParMatiere(Etudiant etudiant, Matiere matiere);
+	public abstract Etudiant createEtudiant(Etudiant etudiant);
 
-	public List<FichePresence> consulterTauxPresenceParMatiere(Etudiant etudiant, Matiere matiere);
+	public abstract List<Etudiant> getEtudiants();
+
+	public abstract Etudiant getEtudiant(Long id);
+
+	public abstract Etudiant updateEtudiant(Long id, Etudiant etudiant);
+
+	public abstract void deleteEtudiant(Long id);
+
+	public abstract Note consulterNoteEtMoyenneParMatiere(Etudiant etudiant, Matiere matiere);
+
+	public abstract List<FichePresence> consulterTauxPresenceParMatiere(Etudiant etudiant, Matiere matiere);
 }

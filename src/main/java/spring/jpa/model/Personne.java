@@ -2,23 +2,30 @@ package spring.jpa.model;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import spring.jpa.enums.Role;
 
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE_PERSONNE")
 @DiscriminatorValue("Personne")
 public class Personne {
 	@Id
 	@GeneratedValue
+	@JsonProperty("id")
 	private Long id;
 	private String nom;
 	private String prenom;
 	private String username;
+	@JsonIgnore
 	private String password;
 	private Role role;
 

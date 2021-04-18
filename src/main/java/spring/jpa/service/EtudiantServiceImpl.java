@@ -3,6 +3,7 @@ package spring.jpa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
@@ -13,6 +14,7 @@ import spring.jpa.repository.EtudiantRepository;
 import spring.jpa.repository.MatiereRepository;
 import spring.jpa.service.interfaces.EtudiantService;
 
+@Service
 public class EtudiantServiceImpl implements EtudiantService {
 
 	@Autowired
@@ -53,6 +55,41 @@ public class EtudiantServiceImpl implements EtudiantService {
 		}
 		return foundedFicheList;
 
+	}
+
+	@Override
+	public Etudiant createEtudiant(Etudiant etudiant) {
+		return etudiantRepos.save(etudiant);
+	}
+
+	@Override
+	public List<Etudiant> getEtudiants() {
+
+		return etudiantRepos.findAll();
+	}
+
+	@Override
+	public Etudiant getEtudiant(Long id) {
+		return etudiantRepos.findById(id).get();
+	}
+
+	@Override
+	public Etudiant updateEtudiant(Long id, Etudiant etudiant) {
+		Etudiant foundedEtudiant = getEtudiant(id);
+		foundedEtudiant.setNom(etudiant.getNom());
+		foundedEtudiant.setPrenom(etudiant.getPrenom());
+		if (etudiant.getGroupe() != null) {
+			foundedEtudiant.setGroupe(etudiant.getGroupe());
+		}
+		if (etudiant.getListNote() != null && etudiant.getListNote().size() > 0) {
+			foundedEtudiant.setListNote(etudiant.getListNote());
+		}
+		return etudiantRepos.save(foundedEtudiant);
+	}
+
+	@Override
+	public void deleteEtudiant(Long id) {
+		etudiantRepos.deleteById(id);
 	}
 
 }

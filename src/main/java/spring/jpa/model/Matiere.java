@@ -8,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Matiere {
 	@Id
 	@GeneratedValue
+	@JsonProperty("id")
 	private Long id;
 	private double volumeHoraire;
 	private String libelle;

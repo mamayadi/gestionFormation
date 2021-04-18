@@ -5,10 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class FichePresence {
 	@Id
 	@GeneratedValue
+	@JsonProperty("id")
 	private Long id;
 	@OneToOne
 	private Etudiant etudiant;

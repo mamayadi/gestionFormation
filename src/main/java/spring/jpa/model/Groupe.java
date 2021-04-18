@@ -8,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Groupe {
 	@Id
 	@GeneratedValue
+	@JsonProperty("id")
 	private Long id;
 	private String libelle;
 	@OneToMany

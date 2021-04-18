@@ -10,24 +10,32 @@ import spring.jpa.model.Groupe;
 import spring.jpa.model.Matiere;
 
 public interface AdminService {
-	public void createFormateur(Formateur formateur);
+	public abstract void createFormateur(Formateur formateur);
 
-	public void createAdmin(Admin admin);
+	public abstract Admin createAdmin(Admin admin);
 
-	public void createEtudiant(Etudiant etudiant);
+	public abstract List<Admin> getAdmins();
 
-	public void assignerGroupeAuFormateur(Groupe groupe, Formateur formateur);
+	public abstract Admin updateAdmin(Long id,Admin admin);
 
-	public void assignerMatiereAuFormateur(Matiere matiere, Formateur formateur);
+	public abstract Admin getAdminById(Long id);
 
-	public void createMatiere(Matiere matiere);
+	public abstract void deleteAdmin(Long id);
 
-	public void createGroupe(Groupe groupe);
+	public abstract void createEtudiant(Etudiant etudiant);
 
-	public double determinerMoyenneEtudiantParMatiere(Etudiant etudiant, Matiere matiere);
+	public abstract void assignerGroupeAuFormateur(Groupe groupe, Formateur formateur);
 
-	public void consulterHistoriquePresenceParGroupe(Groupe groupe);
+	public abstract void assignerMatiereAuFormateur(Matiere matiere, Formateur formateur);
 
-	public List<FichePresence> consulterHistoriquePresenceParEtudiant(Etudiant etudiant);
+	public abstract void createMatiere(Matiere matiere);
+
+	public abstract void createGroupe(Groupe groupe);
+
+	public abstract double determinerMoyenneEtudiantParMatiere(Etudiant etudiant, Matiere matiere);
+
+	public abstract void consulterHistoriquePresenceParGroupe(Groupe groupe);
+
+	public abstract List<FichePresence> consulterHistoriquePresenceParEtudiant(Etudiant etudiant);
 
 }

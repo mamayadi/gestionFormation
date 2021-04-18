@@ -10,10 +10,13 @@ import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Seance {
 	@Id
 	@GeneratedValue
+	@JsonProperty("id")
 	private Long id;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private java.util.Date date;

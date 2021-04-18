@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import spring.jpa.enums.Role;
 
 @Entity
@@ -16,6 +18,7 @@ import spring.jpa.enums.Role;
 public class Etudiant extends Personne {
 	@Id
 	@GeneratedValue
+	@JsonProperty("id")
 	private Long id;
 	@OneToOne
 	private Groupe groupe;
