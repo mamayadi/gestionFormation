@@ -11,15 +11,15 @@ import spring.jpa.model.Seance;
 
 public interface FormateurService {
 	public abstract Formateur createFormateur(Formateur formateur);
-	
+
 	public abstract List<Formateur> getFormateurs();
-	
-	public abstract Formateur getFormateur(Long id);
-	
+
+	public abstract Formateur getFormateurById(Long id);
+
 	public abstract Formateur updateFormateur(Long id, Formateur formateur);
-	
+
 	public abstract void deleteFormateur(Long id);
-	
+
 	public abstract void addSeancePourMatiere(Matiere matiere, Seance senace);
 
 	public abstract void affecterNoteDC(Matiere matiere, Etudiant etudiant, double noteDC);

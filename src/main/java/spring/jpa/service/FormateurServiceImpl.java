@@ -3,6 +3,7 @@ package spring.jpa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
@@ -16,6 +17,7 @@ import spring.jpa.repository.MatiereRepository;
 import spring.jpa.repository.SeanceRepository;
 import spring.jpa.service.interfaces.FormateurService;
 
+@Service
 public class FormateurServiceImpl implements FormateurService {
 	@Autowired
 	private FormateurRepository formateurRepos;
@@ -37,7 +39,7 @@ public class FormateurServiceImpl implements FormateurService {
 	}
 
 	@Override
-	public Formateur getFormateur(Long id) {
+	public Formateur getFormateurById(Long id) {
 		return formateurRepos.findById(id).get();
 	}
 
