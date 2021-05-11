@@ -69,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void deleteAdmin(Long id) {
-		Admin admin= adminRepos.findById(id).get();
+		Admin admin = adminRepos.findById(id).get();
 		adminRepos.delete(admin);
 	}
 

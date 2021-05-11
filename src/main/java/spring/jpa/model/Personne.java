@@ -80,15 +80,15 @@ public class Personne {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
+
 	public boolean isAdmin() {
 		return this.role == Role.ADMIN;
 	}
-	
+
 	public boolean isFormateur() {
 		return this.role == Role.FORMATEUR;
 	}
-	
+
 	public boolean isEtudiant() {
 		return this.role == Role.ETUDIANT;
 	}

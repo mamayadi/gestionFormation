@@ -20,12 +20,12 @@ public class Seance {
 	private Long id;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private java.util.Date date;
-	private double duree;
+	private Double duree;
 	private String description;
 	@OneToMany
 	private List<FichePresence> listFichePresence;
 
-	public Seance(Date date, double duree, String description) {
+	public Seance(Date date, Double duree, String description) {
 		super();
 		this.date = date;
 		this.duree = duree;
@@ -44,11 +44,11 @@ public class Seance {
 		this.date = date;
 	}
 
-	public double getDuree() {
+	public Double getDuree() {
 		return duree;
 	}
 
-	public void setDuree(double duree) {
+	public void setDuree(Double duree) {
 		this.duree = duree;
 	}
 

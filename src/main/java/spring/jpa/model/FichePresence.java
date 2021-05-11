@@ -42,7 +42,5 @@ public class FichePresence {
 	public void setPresence(boolean presence) {
 		this.presence = presence;
 	}
-	
-	
 
 }
