@@ -16,9 +16,9 @@ public class Matiere {
 	@GeneratedValue
 	@JsonProperty("id")
 	private Long id;
-	private double volumeHoraire;
+	private Double volumeHoraire;
 	private String libelle;
-	private double nombreHeureEnseigne;
+	private Double nombreHeureEnseigne;
 	@OneToMany
 	private List<Seance> listSeance;
 	@OneToOne
@@ -28,18 +28,18 @@ public class Matiere {
 		super();
 		this.volumeHoraire = volumeHoraire;
 		this.libelle = libelle;
-		this.nombreHeureEnseigne = 0;
+		this.nombreHeureEnseigne = 0.0;
 	}
 
 	public Matiere() {
 
 	}
 
-	public double getVolumeHoraire() {
+	public Double getVolumeHoraire() {
 		return volumeHoraire;
 	}
 
-	public void setVolumeHoraire(double volumeHoraire) {
+	public void setVolumeHoraire(Double volumeHoraire) {
 		this.volumeHoraire = volumeHoraire;
 	}
 
@@ -51,17 +51,17 @@ public class Matiere {
 		this.libelle = libelle;
 	}
 
-	public double getNombreHeureEnseigne() {
+	public Double getNombreHeureEnseigne() {
 		return nombreHeureEnseigne;
 	}
 
-	public void setNombreHeureEnseigne(double nombreHeureEnseigne) {
+	public void setNombreHeureEnseigne(Double nombreHeureEnseigne) {
 		if (this.volumeHoraire > nombreHeureEnseigne) {
 			this.nombreHeureEnseigne = nombreHeureEnseigne;
 		}
 	}
 
-	public void addNombreHeureEnseigne(double nombreHeure) {
+	public void addNombreHeureEnseigne(Double nombreHeure) {
 		double totalNombreHeure = this.nombreHeureEnseigne + nombreHeure;
 		setNombreHeureEnseigne(totalNombreHeure);
 	}
