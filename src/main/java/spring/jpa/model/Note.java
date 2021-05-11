@@ -13,15 +13,15 @@ public class Note {
 	@GeneratedValue
 	@JsonProperty("id")
 	private Long id;
-	private double noteDC;
-	private double noteDS;
-	private double moyenne;
+	private Double noteDC;
+	private Double noteDS;
+	private Double moyenne;
 	@OneToOne
 	private Matiere matiere;
 	@OneToOne
 	private Etudiant etudiant;
 
-	public Note(double noteDC, double noteDS) {
+	public Note(Double noteDC, Double noteDS) {
 		this.noteDC = noteDC;
 		this.noteDS = noteDS;
 		this.moyenne = calculMoyenne();
@@ -31,29 +31,29 @@ public class Note {
 		// TODO Auto-generated constructor stub
 	}
 
-	public double calculMoyenne() {
+	public Double calculMoyenne() {
 		return this.noteDC * 0.4 + this.noteDS * 0.6;
 	}
 
-	public double getNoteDC() {
+	public Double getNoteDC() {
 		return noteDC;
 	}
 
-	public void setNoteDC(double noteDC) {
+	public void setNoteDC(Double noteDC) {
 		this.noteDC = noteDC;
 		this.moyenne = calculMoyenne();
 	}
 
-	public double getNoteDS() {
+	public Double getNoteDS() {
 		return noteDS;
 	}
 
-	public void setNoteDS(double noteDS) {
+	public void setNoteDS(Double noteDS) {
 		this.noteDS = noteDS;
 		this.moyenne = calculMoyenne();
 	}
 
-	public double getMoyenne() {
+	public Double getMoyenne() {
 		return moyenne;
 	}
 
