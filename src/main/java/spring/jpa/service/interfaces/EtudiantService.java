@@ -13,7 +13,7 @@ public interface EtudiantService {
 
 	public abstract List<Etudiant> getEtudiants();
 
-	public abstract Etudiant getEtudiant(Long id);
+	public abstract Etudiant getEtudiantById(Long id);
 
 	public abstract Etudiant updateEtudiant(Long id, Etudiant etudiant);
 

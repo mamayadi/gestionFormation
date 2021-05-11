@@ -64,18 +64,17 @@ public class EtudiantServiceImpl implements EtudiantService {
 
 	@Override
 	public List<Etudiant> getEtudiants() {
-
 		return etudiantRepos.findAll();
 	}
 
 	@Override
-	public Etudiant getEtudiant(Long id) {
+	public Etudiant getEtudiantById(Long id) {
 		return etudiantRepos.findById(id).get();
 	}
 
 	@Override
 	public Etudiant updateEtudiant(Long id, Etudiant etudiant) {
-		Etudiant foundedEtudiant = getEtudiant(id);
+		Etudiant foundedEtudiant = getEtudiantById(id);
 		foundedEtudiant.setNom(etudiant.getNom());
 		foundedEtudiant.setPrenom(etudiant.getPrenom());
 		if (etudiant.getGroupe() != null) {
