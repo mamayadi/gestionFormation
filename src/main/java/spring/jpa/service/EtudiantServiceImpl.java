@@ -1,5 +1,6 @@
 package spring.jpa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class EtudiantServiceImpl implements EtudiantService {
 	public List<FichePresence> consulterTauxPresenceParMatiere(Etudiant etudiant, Matiere matiere) {
 		Matiere foundedMatiere = matiereRepos.findById(matiere.getId()).get();
 		List<Seance> listSeance = foundedMatiere.getListSeance();
-		List<FichePresence> foundedFicheList = null;
+		List<FichePresence> foundedFicheList = new ArrayList<FichePresence>();
 		for (Seance seance : listSeance) {
 			List<FichePresence> listFiche = seance.getListFichePresence();
 			for (FichePresence fichePresence : listFiche) {

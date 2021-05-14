@@ -4,7 +4,6 @@ import java.util.List;
 
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
-import spring.jpa.model.Formateur;
 import spring.jpa.model.Matiere;
 import spring.jpa.model.Note;
 

@@ -1,5 +1,6 @@
 package spring.jpa.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import spring.jpa.enums.Role;
@@ -21,13 +23,15 @@ public class Etudiant extends Personne {
 	@JsonProperty("id")
 	private Long id;
 	@OneToOne
+	@JsonIgnoreProperties(value = {"listEtudiant"})
 	private Groupe groupe;
 	@OneToMany
+	@JsonIgnoreProperties(value = {"etudiant"})
 	private List<Note> listNote;
 
 	public Etudiant(String nom, String prenom, String username, String password) {
 		super(nom, prenom, username, password, Role.ETUDIANT);
-		// TODO Auto-generated constructor stub
+		this.listNote = new ArrayList<Note>();
 	}
 
 	public Etudiant() {
@@ -48,6 +52,10 @@ public class Etudiant extends Personne {
 
 	public void setListNote(List<Note> listNote) {
 		this.listNote = listNote;
+	}
+	
+	public void addNote(Note note) {
+		this.listNote.add(note);
 	}
 
 	public Long getId() {
