@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import spring.jpa.model.Admin;
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
@@ -30,7 +29,7 @@ import spring.jpa.service.interfaces.AdminService;
 
 @RestController
 @RequestMapping(path = "/admins")
-@ApiOperation(value = "", authorizations = { @Authorization(value = "JWT") })
+@SecurityRequirement(name = "JwtAuthentication")
 public class AdminServiceController {
 	@Autowired
 	AdminService adminService;

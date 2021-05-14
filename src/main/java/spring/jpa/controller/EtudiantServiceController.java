@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import spring.jpa.model.Etudiant;
 import spring.jpa.service.interfaces.EtudiantService;
 
 @RestController
 @RequestMapping(path = "/etudiants")
+@SecurityRequirement(name = "JwtAuthentication")
 public class EtudiantServiceController {
 
 	@Autowired
@@ -31,22 +33,22 @@ public class EtudiantServiceController {
 		return new ResponseEntity<List<Etudiant>>(etudiantService.getEtudiants(), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/etudiants", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	@PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
 	public ResponseEntity<Etudiant> createEtudiant(@RequestBody Etudiant etudiant) {
 		return new ResponseEntity<Etudiant>(etudiantService.createEtudiant(etudiant), HttpStatus.CREATED);
 	}
 
-	@PutMapping(value = "/etudiants/{id}", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
 	public ResponseEntity<Etudiant> updateEtudiant(@PathVariable("id") Long id, @RequestBody Etudiant etudiant) {
 		return new ResponseEntity<Etudiant>(etudiantService.updateEtudiant(id, etudiant), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/etudiants/{id}", produces = MediaType.APPLICATION_JSON)
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
 	public ResponseEntity<Etudiant> getEtudiant(@PathVariable("id") Long id) {
 		return new ResponseEntity<Etudiant>(etudiantService.getEtudiantById(id), HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/etudiants/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteEtudiant(@PathVariable("id") Long id) {
 		etudiantService.deleteEtudiant(id);
 		return new ResponseEntity<>("Etudiant is deleted successfully", HttpStatus.OK);

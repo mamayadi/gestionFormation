@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import spring.jpa.model.Formateur;
 import spring.jpa.service.interfaces.FormateurService;
 
 @RestController
 @RequestMapping(path = "/formateurs")
+@SecurityRequirement(name = "JwtAuthentication")
 public class FormateurServiceController {
 	@Autowired
 	FormateurService formateurService;

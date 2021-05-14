@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import spring.jpa.model.Groupe;
 import spring.jpa.service.interfaces.GroupeService;
 
 @RestController
 @RequestMapping(path = "/groupes")
+@SecurityRequirement(name = "JwtAuthentication")
 public class GroupeServiceController {
 
 	@Autowired

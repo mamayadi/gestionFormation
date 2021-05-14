@@ -8,11 +8,13 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import spring.jpa.model.Seance;
 import spring.jpa.service.interfaces.SeanceService;
 
 @RestController
 @RequestMapping(path = "/seances")
+@SecurityRequirement(name = "JwtAuthentication")
 public class SeanceServiceController {
 
 	@Autowired

@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import spring.jpa.model.FichePresence;
 import spring.jpa.service.interfaces.FichePresenceService;
 
 @RestController
 @RequestMapping(path = "/fichePresences")
+@SecurityRequirement(name = "JwtAuthentication")
 public class FichePresenceServiceController {
 	@Autowired
 	FichePresenceService fichePresenceService;
