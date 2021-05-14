@@ -1,5 +1,6 @@
 package spring.jpa.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +31,15 @@ public class Seance {
 		this.date = date;
 		this.duree = duree;
 		this.description = description;
+		this.listFichePresence = new ArrayList<FichePresence>();
 	}
 
 	public Seance() {
 
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public java.util.Date getDate() {
