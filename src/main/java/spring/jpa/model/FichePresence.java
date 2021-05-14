@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -14,6 +15,7 @@ public class FichePresence {
 	@JsonProperty("id")
 	private Long id;
 	@OneToOne
+	@JsonIgnoreProperties(value = { "groupe", "listNote" })
 	private Etudiant etudiant;
 	private boolean presence;
 
