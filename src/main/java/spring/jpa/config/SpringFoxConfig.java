@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "Gestion Formation", description = "Application de gestion pour un Center de formations", version = "1.1.0", contact = @Contact(name = "Mohamed Ayadi", email = "mamayadi@gmail.com")))
+@OpenAPIDefinition(info = @Info(title = "Gestion Formation", description = "Application de gestion pour un Center de formations", version = "${build.version}", contact = @Contact(name = "Mohamed Ayadi", email = "mamayadi@gmail.com")))
 @SecurityScheme(name = "JwtAuthentication", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SpringFoxConfig {
 }
