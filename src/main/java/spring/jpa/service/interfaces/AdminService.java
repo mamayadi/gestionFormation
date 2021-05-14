@@ -8,34 +8,39 @@ import spring.jpa.model.FichePresence;
 import spring.jpa.model.Formateur;
 import spring.jpa.model.Groupe;
 import spring.jpa.model.Matiere;
+import spring.jpa.model.Note;
+import spring.jpa.model.Seance;
 
 public interface AdminService {
-	public abstract void createFormateur(Formateur formateur);
 
 	public abstract Admin createAdmin(Admin admin);
 
 	public abstract List<Admin> getAdmins();
 
-	public abstract Admin updateAdmin(Long id,Admin admin);
+	public abstract Admin updateAdmin(Long id, Admin admin);
 
 	public abstract Admin getAdminById(Long id);
 
 	public abstract void deleteAdmin(Long id);
 
-	public abstract void createEtudiant(Etudiant etudiant);
+	public abstract Formateur assignerGroupeAuFormateur(long groupeId, long formateurId);
 
-	public abstract void assignerGroupeAuFormateur(Groupe groupe, Formateur formateur);
+	public abstract Formateur assignerMatiereAuFormateur(long matiereId, long formateurId);
 
-	public abstract void assignerMatiereAuFormateur(Matiere matiere, Formateur formateur);
+	public abstract Etudiant assignerGroupeAuEtudiant(long groupeId, long etudiantId);
 
-	public abstract void createMatiere(Matiere matiere);
+	public abstract Groupe assignerMatiereAuGroupe(long matiereId, long groupeId);
 
-	public abstract void createGroupe(Groupe groupe);
+	public abstract Matiere ajoutSeancePourMatiere(Seance seance, long matiereId);
 
-	public abstract double determinerMoyenneEtudiantParMatiere(Etudiant etudiant, Matiere matiere);
+	public abstract Etudiant ajouterNoteAuEtudiant(Note note, long etudiantId);
 
-	public abstract void consulterHistoriquePresenceParGroupe(Groupe groupe);
+	public abstract Seance ajoutFichePresenceAuSeance(FichePresence fichePresence, long seanceId);
 
-	public abstract List<FichePresence> consulterHistoriquePresenceParEtudiant(Etudiant etudiant);
+	public abstract double determinerMoyenneEtudiantParMatiere(long etudiantId, long matiereId);
+
+	public abstract List<FichePresence> consulterHistoriquePresenceParGroupe(long groupeId);
+
+	public abstract List<FichePresence> consulterHistoriquePresenceParEtudiant(long etudiantId);
 
 }

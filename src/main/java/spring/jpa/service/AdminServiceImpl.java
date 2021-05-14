@@ -1,10 +1,12 @@
 package spring.jpa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Admin;
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
@@ -19,6 +21,8 @@ import spring.jpa.repository.FichePresenceRepository;
 import spring.jpa.repository.FormateurRepository;
 import spring.jpa.repository.GroupeRepository;
 import spring.jpa.repository.MatiereRepository;
+import spring.jpa.repository.NoteRepository;
+import spring.jpa.repository.SeanceRepository;
 import spring.jpa.service.interfaces.AdminService;
 
 @Service
@@ -36,11 +40,13 @@ public class AdminServiceImpl implements AdminService {
 	private GroupeRepository groupeRepos;
 	@Autowired
 	private FichePresenceRepository fichePresenceRepos;
+	@Autowired
+	private SeanceRepository seanceRepos;
+	@Autowired
+	private NoteRepository noteRepos;
 
-	@Override
-	public void createFormateur(Formateur formateur) {
-		formateurRepos.save(formateur);
-
+	public AdminServiceImpl() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -55,65 +61,53 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Admin updateAdmin(Long id, Admin admin) {
-		Admin foundedAdmin = adminRepos.findById(id).get();
+		Admin foundedAdmin = adminRepos.findById(id).orElseThrow(() -> new NotFoundException("Admin not found!"));
 		foundedAdmin.setNom(admin.getNom());
 		foundedAdmin.setPrenom(admin.getPrenom());
 		foundedAdmin.setPassword(admin.getPassword());
 		return adminRepos.save(foundedAdmin);
+
 	}
 
 	@Override
 	public Admin getAdminById(Long id) {
-		return adminRepos.findById(id).get();
+		return adminRepos.findById(id).orElseThrow(() -> new NotFoundException("Admin not found!"));
 	}
 
 	@Override
 	public void deleteAdmin(Long id) {
-		Admin admin = adminRepos.findById(id).get();
+		Admin admin = adminRepos.findById(id).orElseThrow(() -> new NotFoundException("Admin not found!"));
 		adminRepos.delete(admin);
 	}
 
 	@Override
-	public void createEtudiant(Etudiant etudiant) {
-		etudiantRepos.save(etudiant);
-
+	public Formateur assignerGroupeAuFormateur(long groupeId, long formateurId) {
+		Formateur foundedFormateur = formateurRepos.findById(formateurId)
+				.orElseThrow(() -> new NotFoundException("Formateur not found!"));
+		Groupe foundedGroupe = groupeRepos.findById(groupeId)
+				.orElseThrow(() -> new NotFoundException("Groupe not found!"));
+		foundedFormateur.addGroupe(foundedGroupe);
+		return formateurRepos.save(foundedFormateur);
 	}
 
 	@Override
-	public void assignerGroupeAuFormateur(Groupe groupe, Formateur formateur) {
-		Formateur foundedFormateur = formateurRepos.findById(formateur.getId()).get();
-		formateur.addGroupe(groupe);
-		formateurRepos.save(foundedFormateur);
-	}
-
-	@Override
-	public void assignerMatiereAuFormateur(Matiere matiere, Formateur formateur) {
-		Matiere foundedMatiere = matiereRepos.findById(matiere.getId()).get();
-		Formateur foundedFormateur = formateurRepos.findById(formateur.getId()).get();
+	public Formateur assignerMatiereAuFormateur(long matiereId, long formateurId) {
+		Matiere foundedMatiere = matiereRepos.findById(matiereId)
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		Formateur foundedFormateur = formateurRepos.findById(formateurId)
+				.orElseThrow(() -> new NotFoundException("Formateur not found!"));
 		foundedFormateur.addMatiere(foundedMatiere);
-		formateurRepos.save(foundedFormateur);
-
+		return formateurRepos.save(foundedFormateur);
 	}
 
 	@Override
-	public void createMatiere(Matiere matiere) {
-		matiereRepos.save(matiere);
-
-	}
-
-	@Override
-	public void createGroupe(Groupe groupe) {
-		groupeRepos.save(groupe);
-
-	}
-
-	@Override
-	public double determinerMoyenneEtudiantParMatiere(Etudiant etudiant, Matiere matiere) {
-		Etudiant foundedEtudiant = etudiantRepos.findById(etudiant.getId()).get();
+	public double determinerMoyenneEtudiantParMatiere(long etudiantId, long matiereId) {
+		Etudiant foundedEtudiant = etudiantRepos.findById(etudiantId)
+				.orElseThrow(() -> new NotFoundException("Etudiant not found!"));
 		List<Note> listNote = foundedEtudiant.getListNote();
 		double moyenne = 0;
 		for (Note note : listNote) {
-			if (note.getMatiere().getId() == matiere.getId()) {
+			if (note.getMatiere().getId() == matiereId) {
 				moyenne = note.calculMoyenne();
 				break;
 			}
@@ -122,25 +116,76 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void consulterHistoriquePresenceParGroupe(Groupe groupe) {
-		Groupe foundedGroupe = groupeRepos.findById(groupe.getId()).get();
+	public List<FichePresence> consulterHistoriquePresenceParGroupe(long groupeId) {
+		Groupe foundedGroupe = groupeRepos.findById(groupeId)
+				.orElseThrow(() -> new NotFoundException("Groupe not found!"));
 		List<Matiere> listMatiere = foundedGroupe.getListMatiere();
+		List<FichePresence> listFichePresenceFounded = new ArrayList<FichePresence>();
 		for (Matiere matiere : listMatiere) {
 			List<Seance> listSeance = matiere.getListSeance();
 			for (Seance seance : listSeance) {
 				List<FichePresence> listFichePresence = seance.getListFichePresence();
 				for (FichePresence fichePresence : listFichePresence) {
-
+					listFichePresenceFounded.add(fichePresence);
 				}
 			}
 		}
-
+		return listFichePresenceFounded;
 	}
 
 	@Override
-	public List<FichePresence> consulterHistoriquePresenceParEtudiant(Etudiant etudiant) {
-		List<FichePresence> foundedFichePresence = fichePresenceRepos.findByEtudiant(etudiant);
+	public List<FichePresence> consulterHistoriquePresenceParEtudiant(long etudiantId) {
+		Etudiant foundedEtudiant = etudiantRepos.findById(etudiantId)
+				.orElseThrow(() -> new NotFoundException("Etudiant not found!"));
+		List<FichePresence> foundedFichePresence = fichePresenceRepos.findByEtudiant(foundedEtudiant);
 		return foundedFichePresence;
+	}
+
+	@Override
+	public Etudiant assignerGroupeAuEtudiant(long groupeId, long etudiantId) {
+		Groupe foundedGroupe = groupeRepos.findById(groupeId)
+				.orElseThrow(() -> new NotFoundException("Groupe not found!"));
+		Etudiant foundedEtudiant = etudiantRepos.findById(etudiantId)
+				.orElseThrow(() -> new NotFoundException("Etudiant not found!"));
+		foundedEtudiant.setGroupe(foundedGroupe);
+		return etudiantRepos.save(foundedEtudiant);
+	}
+
+	@Override
+	public Groupe assignerMatiereAuGroupe(long matiereId, long groupeId) {
+		Matiere foundedMatiere = matiereRepos.findById(matiereId)
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		Groupe foundedGroupe = groupeRepos.findById(groupeId)
+				.orElseThrow(() -> new NotFoundException("Groupe not found!"));
+		foundedGroupe.addMatiere(foundedMatiere);
+		return groupeRepos.save(foundedGroupe);
+	}
+
+	@Override
+	public Matiere ajoutSeancePourMatiere(Seance seance, long matiereId) {
+		Seance savedSeance = seanceRepos.save(seance);
+		Matiere foundedMatiere = matiereRepos.findById(matiereId)
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		foundedMatiere.addSeance(savedSeance);
+		return matiereRepos.save(foundedMatiere);
+	}
+
+	@Override
+	public Etudiant ajouterNoteAuEtudiant(Note note, long etudiantId) {
+		Etudiant foundedEtudiant = etudiantRepos.findById(etudiantId)
+				.orElseThrow(() -> new NotFoundException("Etudiant not found!"));
+		Note savedNote = noteRepos.save(note);
+		foundedEtudiant.addNote(savedNote);
+		return etudiantRepos.save(foundedEtudiant);
+	}
+
+	@Override
+	public Seance ajoutFichePresenceAuSeance(FichePresence fichePresence, long seanceId) {
+		Seance foundedSeance = seanceRepos.findById(seanceId)
+				.orElseThrow(() -> new NotFoundException("Seance not found!"));
+		FichePresence savedFichePresence = fichePresenceRepos.save(fichePresence);
+		foundedSeance.addFichePresence(savedFichePresence);
+		return null;
 	}
 
 }
