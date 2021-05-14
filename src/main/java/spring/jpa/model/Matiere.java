@@ -22,7 +22,6 @@ public class Matiere {
 	private String libelle;
 	private Double nombreHeureEnseigne;
 	@OneToMany
-	
 	private List<Seance> listSeance;
 	@OneToOne
 	@JsonIgnoreProperties(value = { "listMatiere" })

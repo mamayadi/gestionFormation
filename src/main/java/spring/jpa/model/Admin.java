@@ -12,6 +12,10 @@ import spring.jpa.enums.Role;
 @Entity
 @DiscriminatorValue("admin")
 public class Admin extends Personne {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	@JsonProperty("id")
@@ -29,5 +33,5 @@ public class Admin extends Personne {
 	public Long getId() {
 		return id;
 	}
-
+	
 }

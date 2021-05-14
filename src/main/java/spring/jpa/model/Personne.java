@@ -41,7 +41,6 @@ public class Personne implements UserDetails {
 	private String username;
 	@JsonIgnore
 	private String password;
-	@JsonIgnore
 	private Role role;
 
 	public Personne(String nom, String prenom, String username, String password, Role role) {

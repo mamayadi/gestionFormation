@@ -30,6 +30,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 		return new org.springframework.security.core.userdetails.User(personne.getUsername(), personne.getPassword(),
 				personne.getAuthorities());
 	}
+	
+	public Personne getUserByUsername(String username)throws UsernameNotFoundException {
+		Personne personne = personneRepos.findByUsername(username);
+		if (personne == null) {
+			throw new UsernameNotFoundException("User not found with username: " + username);
+		}
+		return personne;
+	}
 
 	public Personne save(Personne personne) {
 		Personne newPersonne = new Personne();
