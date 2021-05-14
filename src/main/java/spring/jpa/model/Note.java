@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -19,6 +20,7 @@ public class Note {
 	@OneToOne
 	private Matiere matiere;
 	@OneToOne
+	@JsonIgnoreProperties(value = { "groupe", "listNote" })
 	private Etudiant etudiant;
 
 	public Note(Double noteDC, Double noteDS) {
@@ -29,6 +31,10 @@ public class Note {
 
 	public Note() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public Double calculMoyenne() {
