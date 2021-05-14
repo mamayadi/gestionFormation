@@ -1,5 +1,6 @@
 package spring.jpa.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import spring.jpa.enums.Role;
@@ -23,11 +25,13 @@ public class Formateur extends Personne {
 	@OneToMany
 	private List<Matiere> listMatiere;
 	@ManyToMany
+	@JsonIgnoreProperties(value = { "listMatiere"})
 	private List<Groupe> listGroupe;
 
 	public Formateur(String nom, String prenom, String username, String password) {
 		super(nom, prenom, username, password, Role.FORMATEUR);
-		// TODO Auto-generated constructor stub
+		this.listGroupe = new ArrayList<Groupe>();
+		this.listMatiere = new ArrayList<Matiere>();
 	}
 
 	public Formateur() {

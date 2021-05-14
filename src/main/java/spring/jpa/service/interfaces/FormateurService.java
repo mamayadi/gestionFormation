@@ -5,8 +5,8 @@ import java.util.List;
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
 import spring.jpa.model.Formateur;
-import spring.jpa.model.Groupe;
 import spring.jpa.model.Matiere;
+import spring.jpa.model.Note;
 import spring.jpa.model.Seance;
 
 public interface FormateurService {
@@ -20,15 +20,17 @@ public interface FormateurService {
 
 	public abstract void deleteFormateur(Long id);
 
-	public abstract void addSeancePourMatiere(Matiere matiere, Seance senace);
+	public abstract Matiere addSeancePourMatiere(Matiere matiere, Seance senace);
 
-	public abstract void affecterNoteDC(Matiere matiere, Etudiant etudiant, double noteDC);
+	public abstract Note addNote(Matiere matiere, Etudiant etudiant, Note note);
+	
+	public abstract Note affecterNoteDC(Matiere matiere, Etudiant etudiant, double noteDC);
 
-	public abstract void affecterNoteDS(Matiere matiere, Etudiant etudiant, double noteDS);
+	public abstract Note affecterNoteDS(Matiere matiere, Etudiant etudiant, double noteDS);
 
-	public abstract void affecterFichePresencePourSeance(Groupe groupe, Matiere matiere, Seance seance,
+	public abstract Seance affecterFichePresencePourSeance(Seance seance,
 			List<FichePresence> listFichePresence);
 
-	public abstract void consulterListSeancePourGroupeMatiere(Groupe groupe, Matiere matiere);
+	public abstract List<Seance> consulterListSeancePourGroupeMatiere( Matiere matiere);
 
 }
