@@ -1,5 +1,6 @@
 package spring.jpa.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -20,15 +22,17 @@ public class Matiere {
 	private String libelle;
 	private Double nombreHeureEnseigne;
 	@OneToMany
+	
 	private List<Seance> listSeance;
 	@OneToOne
+	@JsonIgnoreProperties(value = { "listMatiere" })
 	private Groupe groupe;
 
 	public Matiere(double volumeHoraire, String libelle) {
-		super();
 		this.volumeHoraire = volumeHoraire;
 		this.libelle = libelle;
 		this.nombreHeureEnseigne = 0.0;
+		this.listSeance = new ArrayList<Seance>();
 	}
 
 	public Matiere() {
