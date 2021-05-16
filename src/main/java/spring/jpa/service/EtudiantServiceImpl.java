@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import spring.jpa.model.Etudiant;
@@ -17,7 +18,8 @@ import spring.jpa.service.interfaces.EtudiantService;
 
 @Service
 public class EtudiantServiceImpl implements EtudiantService {
-
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private EtudiantRepository etudiantRepos;
 	@Autowired
@@ -60,6 +62,7 @@ public class EtudiantServiceImpl implements EtudiantService {
 
 	@Override
 	public Etudiant createEtudiant(Etudiant etudiant) {
+		etudiant.setPassword(passwordEncoder.encode(etudiant.getPassword()));
 		return etudiantRepos.save(etudiant);
 	}
 
@@ -78,6 +81,7 @@ public class EtudiantServiceImpl implements EtudiantService {
 		Etudiant foundedEtudiant = getEtudiantById(id);
 		foundedEtudiant.setNom(etudiant.getNom());
 		foundedEtudiant.setPrenom(etudiant.getPrenom());
+		foundedEtudiant.setPassword(passwordEncoder.encode(etudiant.getPassword()));
 		if (etudiant.getGroupe() != null) {
 			foundedEtudiant.setGroupe(etudiant.getGroupe());
 		}

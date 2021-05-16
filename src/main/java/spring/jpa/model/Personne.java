@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import spring.jpa.enums.Role;
 
@@ -39,7 +40,7 @@ public class Personne implements UserDetails {
 	private String prenom;
 	@Column(unique = true)
 	private String username;
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private Role role;
 

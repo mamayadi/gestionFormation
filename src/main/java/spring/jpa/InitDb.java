@@ -44,15 +44,13 @@ public class InitDb implements CommandLineRunner {
 	NoteService noteService;
 	@Autowired
 	SeanceService seanceService;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void run(String... args) throws Exception {
 		try {
-			Admin admin = adminService.createAdmin(new Admin("super", "admin", "admin", passwordEncoder.encode("123")));
-			Etudiant etudiant = etudiantService.createEtudiant(new Etudiant("med", "ayadi", "medayadi", passwordEncoder.encode("123")));
-			Formateur formateur = formateurService.createFormateur(new Formateur("ahmed", "jmal", "jmalahmed", passwordEncoder.encode("123")));
+			Admin admin = adminService.createAdmin(new Admin("super", "admin", "admin", "123"));
+			Etudiant etudiant = etudiantService.createEtudiant(new Etudiant("med", "ayadi", "medayadi", "123"));
+			Formateur formateur = formateurService.createFormateur(new Formateur("ahmed", "jmal", "jmalahmed", "123"));
 			Groupe groupe = groupeService.createGroupe(new Groupe("GINF 2.2"));
 			Matiere matiere = matiereService.createMatiere(new Matiere(40, "Spring"));
 			matiere.setGroupe(groupe);

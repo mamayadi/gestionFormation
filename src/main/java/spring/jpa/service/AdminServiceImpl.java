@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import spring.jpa.exceptions.NotFoundException;
@@ -27,7 +28,8 @@ import spring.jpa.service.interfaces.AdminService;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private AdminRepository adminRepos;
 	@Autowired
@@ -51,6 +53,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Admin createAdmin(Admin admin) {
+		admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 		return adminRepos.save(admin);
 	}
 
@@ -62,11 +65,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Admin updateAdmin(Long id, Admin admin) {
 		Admin foundedAdmin = adminRepos.findById(id).orElseThrow(() -> new NotFoundException("Admin not found!"));
-		foundedAdmin.setNom(admin.getNom());
-		foundedAdmin.setPrenom(admin.getPrenom());
-		foundedAdmin.setPassword(admin.getPassword());
+		if (admin.getNom() != null) {
+			foundedAdmin.setNom(admin.getNom());
+		}
+		if (admin.getPrenom() != null) {
+			foundedAdmin.setPrenom(admin.getPrenom());
+		}
+		if (admin.getPassword() != null) {
+			foundedAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
+		}
 		return adminRepos.save(foundedAdmin);
-
 	}
 
 	@Override

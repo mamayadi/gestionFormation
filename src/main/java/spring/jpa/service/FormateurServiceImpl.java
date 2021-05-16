@@ -3,6 +3,7 @@ package spring.jpa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import spring.jpa.exceptions.NotFoundException;
@@ -22,6 +23,8 @@ import spring.jpa.service.interfaces.FormateurService;
 @Service
 public class FormateurServiceImpl implements FormateurService {
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
 	private FormateurRepository formateurRepos;
 	@Autowired
 	private EtudiantRepository etudiantRepos;
@@ -37,6 +40,7 @@ public class FormateurServiceImpl implements FormateurService {
 
 	@Override
 	public Formateur createFormateur(Formateur formateur) {
+		formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
 		return formateurRepos.save(formateur);
 	}
 
@@ -55,6 +59,7 @@ public class FormateurServiceImpl implements FormateurService {
 		Formateur foundedFormateur = formateurRepos.findById(id).get();
 		foundedFormateur.setNom(formateur.getNom());
 		foundedFormateur.setPrenom(formateur.getPrenom());
+		foundedFormateur.setPassword(passwordEncoder.encode(foundedFormateur.getPassword()));
 		return formateurRepos.save(foundedFormateur);
 	}
 
