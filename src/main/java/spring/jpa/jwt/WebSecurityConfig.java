@@ -1,5 +1,7 @@
 package spring.jpa.jwt;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import spring.jpa.enums.Role;
 
@@ -61,11 +64,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		// We don't need CSRF for this example
-		httpSecurity.csrf().disable()
+		httpSecurity.cors().configurationSource(request -> {
+			CorsConfiguration configuration = new CorsConfiguration();
+			configuration.addAllowedOriginPattern("*");
+//			configuration.setAllowedOrigins(Collections.singletonList("*"));
+			configuration.setAllowedMethods(Collections.singletonList("*"));
+			configuration.setAllowedHeaders(Collections.singletonList("*"));
+			// in case authentication is enabled this flag MUST be set, otherwise CORS
+			// requests will fail
+			configuration.setAllowCredentials(true);
+			return configuration;
+		}).and().csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests()
-				.antMatchers(AUTH_WHITELIST).permitAll()
-				.antMatchers("/admins/**").hasAnyRole(Role.ADMIN.name()).
+				.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll().antMatchers("/admins/**")
+				.hasAnyRole(Role.ADMIN.name()).
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to
