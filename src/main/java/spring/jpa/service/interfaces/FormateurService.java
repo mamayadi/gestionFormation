@@ -19,6 +19,10 @@ public interface FormateurService {
 	public abstract Formateur updateFormateur(Long id, Formateur formateur);
 
 	public abstract void deleteFormateur(Long id);
+	
+	public abstract Formateur addGroupe(Long id, Long idGroupe);
+	
+	public abstract Formateur addMatiere(Long id, Long idMatiere);
 
 	public abstract Matiere addSeancePourMatiere(Matiere matiere, Seance senace);
 

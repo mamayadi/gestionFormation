@@ -20,5 +20,5 @@ public interface EtudiantService {
 
 	public abstract Note consulterNoteEtMoyenneParMatiere(Etudiant etudiant, Matiere matiere);
 
-	public abstract List<FichePresence> consulterTauxPresenceParMatiere(Etudiant etudiant, Matiere matiere);
+	public abstract double consulterTauxPresenceParMatiere(Long id, Matiere matiere);
 }

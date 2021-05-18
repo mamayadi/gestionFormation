@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
 import spring.jpa.model.Matiere;
@@ -30,37 +31,6 @@ public class EtudiantServiceImpl implements EtudiantService {
 	}
 
 	@Override
-	public Note consulterNoteEtMoyenneParMatiere(Etudiant etudiant, Matiere matiere) {
-		Etudiant foundedEtudiant = etudiantRepos.findById(etudiant.getId()).get();
-		List<Note> listNote = foundedEtudiant.getListNote();
-		Note foundedNote = null;
-		for (Note note : listNote) {
-			if (note.getMatiere().getId() == matiere.getId()) {
-				foundedNote = note;
-				break;
-			}
-		}
-		return foundedNote;
-	}
-
-	@Override
-	public List<FichePresence> consulterTauxPresenceParMatiere(Etudiant etudiant, Matiere matiere) {
-		Matiere foundedMatiere = matiereRepos.findById(matiere.getId()).get();
-		List<Seance> listSeance = foundedMatiere.getListSeance();
-		List<FichePresence> foundedFicheList = new ArrayList<FichePresence>();
-		for (Seance seance : listSeance) {
-			List<FichePresence> listFiche = seance.getListFichePresence();
-			for (FichePresence fichePresence : listFiche) {
-				if (fichePresence.getEtudiant().getId() == etudiant.getId()) {
-					foundedFicheList.add(fichePresence);
-				}
-			}
-		}
-		return foundedFicheList;
-
-	}
-
-	@Override
 	public Etudiant createEtudiant(Etudiant etudiant) {
 		etudiant.setPassword(passwordEncoder.encode(etudiant.getPassword()));
 		return etudiantRepos.save(etudiant);
@@ -73,7 +43,7 @@ public class EtudiantServiceImpl implements EtudiantService {
 
 	@Override
 	public Etudiant getEtudiantById(Long id) {
-		return etudiantRepos.findById(id).get();
+		return etudiantRepos.findById(id).orElseThrow(() -> new NotFoundException("Etudiant not found!"));
 	}
 
 	@Override
@@ -93,7 +63,44 @@ public class EtudiantServiceImpl implements EtudiantService {
 
 	@Override
 	public void deleteEtudiant(Long id) {
-		etudiantRepos.deleteById(id);
+		Etudiant etudiant = getEtudiantById(id);
+		etudiantRepos.delete(etudiant);
+	}
+
+	/******* Etudiant end CRUD *******/
+
+	@Override
+	public Note consulterNoteEtMoyenneParMatiere(Etudiant etudiant, Matiere matiere) {
+		Etudiant foundedEtudiant = getEtudiantById(etudiant.getId());
+		List<Note> listNote = foundedEtudiant.getListNote();
+		Note foundedNote = null;
+		for (Note note : listNote) {
+			if (note.getMatiere().getId() == matiere.getId()) {
+				foundedNote = note;
+				break;
+			}
+		}
+		return foundedNote;
+	}
+
+	@Override
+	public double consulterTauxPresenceParMatiere(Long id, Matiere matiere) {
+		Etudiant etudiant = getEtudiantById(id);
+		Matiere foundedMatiere = matiereRepos.findById(matiere.getId())
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		List<Seance> listSeance = foundedMatiere.getListSeance();
+		double total = 0;
+		//List<FichePresence> foundedFicheList = new ArrayList<FichePresence>();
+		for (Seance seance : listSeance) {
+			List<FichePresence> listFiche = seance.getListFichePresence();
+			for (FichePresence fichePresence : listFiche) {
+				if (fichePresence.isPresence() && fichePresence.getEtudiant().getId() == etudiant.getId()) {
+					total+=1;
+					//foundedFicheList.add(fichePresence);
+				}
+			}
+		}
+		return total *100/foundedMatiere.getListSeance().size();
 	}
 
 }

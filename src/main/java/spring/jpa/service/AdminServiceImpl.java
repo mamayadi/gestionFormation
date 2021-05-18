@@ -64,7 +64,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Admin updateAdmin(Long id, Admin admin) {
-		Admin foundedAdmin = adminRepos.findById(id).orElseThrow(() -> new NotFoundException("Admin not found!"));
+		Admin foundedAdmin = getAdminById(id);
 		if (admin.getNom() != null) {
 			foundedAdmin.setNom(admin.getNom());
 		}
@@ -84,9 +84,11 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void deleteAdmin(Long id) {
-		Admin admin = adminRepos.findById(id).orElseThrow(() -> new NotFoundException("Admin not found!"));
+		Admin admin = getAdminById(id);
 		adminRepos.delete(admin);
 	}
+
+	/***** End Admin CRUD ******/
 
 	@Override
 	public Formateur assignerGroupeAuFormateur(long groupeId, long formateurId) {

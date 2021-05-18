@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.FichePresence;
 import spring.jpa.repository.FichePresenceRepository;
 import spring.jpa.service.interfaces.FichePresenceService;
@@ -30,7 +31,7 @@ public class FichePresenceServiceImpl implements FichePresenceService {
 
 	@Override
 	public FichePresence getFichePresenceById(Long id) {
-		return fichePresenceRepos.findById(id).get();
+		return fichePresenceRepos.findById(id).orElseThrow(() -> new NotFoundException("Fiche presence not found!"));
 	}
 
 	@Override
@@ -47,6 +48,7 @@ public class FichePresenceServiceImpl implements FichePresenceService {
 
 	@Override
 	public void deleteFichePresence(Long id) {
-		fichePresenceRepos.deleteById(id);
+		FichePresence fichePresence = getFichePresenceById(id);
+		fichePresenceRepos.delete(fichePresence);
 	}
 }

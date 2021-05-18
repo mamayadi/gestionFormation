@@ -1,5 +1,6 @@
 package spring.jpa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,14 @@ import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Etudiant;
 import spring.jpa.model.FichePresence;
 import spring.jpa.model.Formateur;
+import spring.jpa.model.Groupe;
 import spring.jpa.model.Matiere;
 import spring.jpa.model.Note;
 import spring.jpa.model.Seance;
 import spring.jpa.repository.EtudiantRepository;
+import spring.jpa.repository.FichePresenceRepository;
 import spring.jpa.repository.FormateurRepository;
+import spring.jpa.repository.GroupeRepository;
 import spring.jpa.repository.MatiereRepository;
 import spring.jpa.repository.NoteRepository;
 import spring.jpa.repository.SeanceRepository;
@@ -29,11 +33,15 @@ public class FormateurServiceImpl implements FormateurService {
 	@Autowired
 	private EtudiantRepository etudiantRepos;
 	@Autowired
+	private GroupeRepository groupeRepos;
+	@Autowired
 	private SeanceRepository seanceRepos;
 	@Autowired
 	private MatiereRepository matiereRepos;
 	@Autowired
 	private NoteRepository noteRepos;
+	@Autowired
+	private FichePresenceRepository fichePresenceRepos;
 
 	public FormateurServiceImpl() {
 	}
@@ -51,31 +59,31 @@ public class FormateurServiceImpl implements FormateurService {
 
 	@Override
 	public Formateur getFormateurById(Long id) {
-		return formateurRepos.findById(id).get();
+		return formateurRepos.findById(id).orElseThrow(() -> new NotFoundException("Formateur not found!"));
 	}
 
 	@Override
 	public Formateur updateFormateur(Long id, Formateur formateur) {
-		Formateur foundedFormateur = formateurRepos.findById(id).get();
-		foundedFormateur.setNom(formateur.getNom());
-		foundedFormateur.setPrenom(formateur.getPrenom());
-		foundedFormateur.setPassword(passwordEncoder.encode(foundedFormateur.getPassword()));
+		Formateur foundedFormateur = getFormateurById(id);
+		if (formateur.getNom() != null) {
+			foundedFormateur.setNom(formateur.getNom());
+		}
+		if (formateur.getPrenom() != null) {
+			foundedFormateur.setPrenom(formateur.getPrenom());
+		}
+		if (foundedFormateur.getPassword() != null) {
+			foundedFormateur.setPassword(passwordEncoder.encode(foundedFormateur.getPassword()));
+		}
 		return formateurRepos.save(foundedFormateur);
 	}
 
 	@Override
 	public void deleteFormateur(Long id) {
-		formateurRepos.deleteById(id);
-
+		Formateur formateur = getFormateurById(id);
+		formateurRepos.delete(formateur);
 	}
 
-	@Override
-	public Matiere addSeancePourMatiere(Matiere matiere, Seance senace) {
-		Matiere foundedMatiere = matiereRepos.findById(matiere.getId()).get();
-		Seance createdSeance = seanceRepos.save(senace);
-		foundedMatiere.addSeance(createdSeance);
-		return matiereRepos.save(foundedMatiere);
-	}
+	/******* End formateur CRUD ******/
 
 	@Override
 	public Note addNote(Matiere matiere, Etudiant etudiant, Note note) {
@@ -128,6 +136,42 @@ public class FormateurServiceImpl implements FormateurService {
 				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
 		return foundedMatiere.getListSeance();
 
+	}
+
+	/******** Formateur Methods *********/
+	@Override
+	public Formateur addGroupe(Long id, Long idGroupe) {
+		Formateur formateur = getFormateurById(id);
+		Groupe groupe = groupeRepos.findById(idGroupe).orElseThrow(() -> new NotFoundException("Groupe not found!"));
+		formateur.addGroupe(groupe);
+		return formateurRepos.save(formateur);
+	}
+
+	@Override
+	public Formateur addMatiere(Long id, Long idMatiere) {
+		Formateur formateur = getFormateurById(id);
+		Matiere matiere = matiereRepos.findById(idMatiere)
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		formateur.addMatiere(matiere);
+		return formateurRepos.save(formateur);
+	}
+
+	@Override
+	public Matiere addSeancePourMatiere(Matiere matiere, Seance senace) {
+		Matiere foundedMatiere = matiereRepos.findById(matiere.getId())
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		Groupe groupe = groupeRepos.findById(foundedMatiere.getId())
+				.orElseThrow(() -> new NotFoundException("Groupe not found!"));
+		List<FichePresence> listFichePresence = new ArrayList<FichePresence>();
+		for (Etudiant etudiant : groupe.getListEtudiant()) {
+			FichePresence fichePresence = fichePresenceRepos.save(new FichePresence(etudiant, false));
+			listFichePresence.add(fichePresence);
+		}
+		senace.setListFichePresence(listFichePresence);
+		Seance createdSeance = seanceRepos.save(senace);
+		foundedMatiere.setNombreHeureEnseigne(foundedMatiere.getNombreHeureEnseigne() + createdSeance.getDuree());
+		foundedMatiere.addSeance(createdSeance);
+		return matiereRepos.save(foundedMatiere);
 	}
 
 }

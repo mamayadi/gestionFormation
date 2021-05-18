@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,14 +24,17 @@ public class Seance {
 	private java.util.Date date;
 	private Double duree;
 	private String description;
+	@ManyToOne
+	private Matiere matiere;
 	@OneToMany
 	private List<FichePresence> listFichePresence;
 
-	public Seance(Date date, Double duree, String description) {
+	public Seance(Date date, Double duree, Matiere matiere,String description) {
 		super();
 		this.date = date;
 		this.duree = duree;
 		this.description = description;
+		this.matiere = matiere;
 		this.listFichePresence = new ArrayList<FichePresence>();
 	}
 
@@ -76,5 +80,13 @@ public class Seance {
 
 	public void addFichePresence(FichePresence fichePresence) {
 		this.listFichePresence.add(fichePresence);
+	}
+
+	public Matiere getMatiere() {
+		return matiere;
+	}
+
+	public void setMatiere(Matiere matiere) {
+		this.matiere = matiere;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Matiere;
 import spring.jpa.repository.MatiereRepository;
 import spring.jpa.service.interfaces.MatiereService;
@@ -28,7 +29,7 @@ public class MatiereServiceImpl implements MatiereService {
 	}
 
 	public Matiere getMatiereById(Long id) {
-		return matiereRepos.findById(id).get();
+		return matiereRepos.findById(id).orElseThrow(() -> new NotFoundException("Matiere not found!"));
 	}
 
 	public Matiere updateMatiere(Long id, Matiere matiere) {
@@ -52,6 +53,11 @@ public class MatiereServiceImpl implements MatiereService {
 	}
 
 	public void deleteMatiere(Long id) {
-		matiereRepos.deleteById(id);
+		Matiere matiere = getMatiereById(id);
+		matiereRepos.delete(matiere);
 	}
+	
+	/******* Matiere end CRUD ********/
+
+	
 }

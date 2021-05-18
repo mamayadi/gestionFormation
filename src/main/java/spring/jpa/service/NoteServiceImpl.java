@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Note;
 import spring.jpa.repository.NoteRepository;
 import spring.jpa.service.interfaces.NoteService;
@@ -28,7 +29,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	public Note getNoteById(Long id) {
-		return noteRepos.findById(id).get();
+		return noteRepos.findById(id).orElseThrow(() -> new NotFoundException("Note not found!"));
 	}
 
 	public Note updateNote(Long id, Note note) {
@@ -49,6 +50,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	public void deleteNote(Long id) {
-		noteRepos.deleteById(id);
+		Note note = getNoteById(id);
+		noteRepos.delete(note);
 	}
 }

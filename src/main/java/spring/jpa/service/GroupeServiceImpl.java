@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Groupe;
-
+import spring.jpa.model.Matiere;
 import spring.jpa.repository.GroupeRepository;
 import spring.jpa.service.interfaces.GroupeService;
 
@@ -28,7 +29,7 @@ public class GroupeServiceImpl implements GroupeService {
 	}
 
 	public Groupe getGroupeById(Long id) {
-		return groupeRepos.findById(id).get();
+		return groupeRepos.findById(id).orElseThrow(() -> new NotFoundException("Groupe not found!"));
 	}
 
 	public Groupe updateGroupe(Long id, Groupe groupe) {
@@ -46,7 +47,16 @@ public class GroupeServiceImpl implements GroupeService {
 	}
 
 	public void deleteGroupe(Long id) {
-		groupeRepos.deleteById(id);
+		Groupe groupe = getGroupeById(id);
+		groupeRepos.delete(groupe);
+	}
+
+	/****** Groupe end CRUD ********/
+
+	@Override
+	public List<Matiere> getListMatiereParGroupe(Long idGroupe) {
+		Groupe groupe = getGroupeById(idGroupe);
+		return groupe.getListMatiere();
 	}
 
 }

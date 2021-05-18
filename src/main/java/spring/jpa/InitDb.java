@@ -55,7 +55,7 @@ public class InitDb implements CommandLineRunner {
 			Matiere matiere = matiereService.createMatiere(new Matiere(40, "Spring"));
 			matiere.setGroupe(groupe);
 			matiere = matiereService.updateMatiere(matiere.getId(), matiere);
-			Seance seance = seanceService.createSeance(new Seance(new Date(), 3.0, "Seance description test"));
+			Seance seance = seanceService.createSeance(new Seance(new Date(), 3.0, matiere, "Seance description test"));
 			Note note = noteService.createNote(new Note(16.0, 17.0));
 			note.setEtudiant(etudiant);
 			note.setMatiere(matiere);
@@ -71,7 +71,7 @@ public class InitDb implements CommandLineRunner {
 			adminService.assignerMatiereAuGroupe(matiere.getId(), groupe.getId());
 			adminService.ajoutFichePresenceAuSeance(fichePresence, seance.getId());
 			adminService.ajouterNoteAuEtudiant(note, etudiant.getId());
-			adminService.ajoutSeancePourMatiere(seance, matiere.getId());
+			//adminService.ajoutSeancePourMatiere(seance, matiere.getId());
 
 			// Formateur
 //			formateurService.addSeancePourMatiere(matiere, seance);
