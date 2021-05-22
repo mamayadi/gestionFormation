@@ -3,8 +3,6 @@ package spring.jpa.service.interfaces;
 import java.util.List;
 
 import spring.jpa.model.Etudiant;
-import spring.jpa.model.FichePresence;
-import spring.jpa.model.Matiere;
 import spring.jpa.model.Note;
 
 public interface EtudiantService {
@@ -18,7 +16,8 @@ public interface EtudiantService {
 
 	public abstract void deleteEtudiant(Long id);
 
-	public abstract Note consulterNoteEtMoyenneParMatiere(Etudiant etudiant, Matiere matiere);
+	public abstract Etudiant assignerGroupeAuEtudiant(Long groupeId, Long etudiantId);
 
-	public abstract double consulterTauxPresenceParMatiere(Long id, Matiere matiere);
+	public abstract Etudiant ajouterNoteAuEtudiant(Note note, Long etudiantId);
+
 }

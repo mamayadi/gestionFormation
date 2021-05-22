@@ -9,12 +9,15 @@ import spring.jpa.exceptions.NotFoundException;
 import spring.jpa.model.Groupe;
 import spring.jpa.model.Matiere;
 import spring.jpa.repository.GroupeRepository;
+import spring.jpa.repository.MatiereRepository;
 import spring.jpa.service.interfaces.GroupeService;
 
 @Service
 public class GroupeServiceImpl implements GroupeService {
 	@Autowired
 	private GroupeRepository groupeRepos;
+	@Autowired
+	private MatiereRepository matiereRepos;
 
 	public GroupeServiceImpl() {
 		// TODO Auto-generated constructor stub
@@ -54,9 +57,15 @@ public class GroupeServiceImpl implements GroupeService {
 	/****** Groupe end CRUD ********/
 
 	@Override
-	public List<Matiere> getListMatiereParGroupe(Long idGroupe) {
-		Groupe groupe = getGroupeById(idGroupe);
-		return groupe.getListMatiere();
+	public Groupe assignerMatiereAuGroupe(Long idGroupe, Long idMatiere) {
+		Groupe foundedGroupe = groupeRepos.findById(idGroupe)
+				.orElseThrow(() -> new NotFoundException("Groupe not found!"));
+		Matiere foundedMatiere = matiereRepos.findById(idMatiere)
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		foundedGroupe.addMatiere(foundedMatiere);
+		foundedMatiere.setGroupe(foundedGroupe);
+		matiereRepos.save(foundedMatiere);
+		return groupeRepos.save(foundedGroupe);
 	}
 
 }

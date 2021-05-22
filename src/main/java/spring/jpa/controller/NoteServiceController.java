@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import spring.jpa.enums.DeleteResponse;
 import spring.jpa.model.Note;
 import spring.jpa.service.interfaces.NoteService;
 
@@ -51,6 +52,19 @@ public class NoteServiceController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteNote(@PathVariable("id") Long id) {
 		noteService.deleteNote(id);
-		return new ResponseEntity<>("Note is deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>(new DeleteResponse("Note is deleted successfully"), HttpStatus.OK);
+	}
+
+	/*******************/
+	@PostMapping(value = "/add-update", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Note> addUpdateNote(@RequestBody Note note) {
+		return new ResponseEntity<Note>(noteService.addUpdateNote(note), HttpStatus.CREATED);
+	}
+
+	@GetMapping(value = "/{idEtudiant}/note-etudiant-matiere/{idMatiere}", produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Note> getNote(@PathVariable("idEtudiant") Long idEtudiant,
+			@PathVariable("idMatiere") Long idMatiere) {
+		return new ResponseEntity<Note>(noteService.consulterMoyenneEtudiantParMatiere(idEtudiant, idMatiere),
+				HttpStatus.OK);
 	}
 }

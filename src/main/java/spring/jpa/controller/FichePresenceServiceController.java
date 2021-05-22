@@ -1,5 +1,6 @@
 package spring.jpa.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import spring.jpa.enums.DeleteResponse;
 import spring.jpa.model.FichePresence;
 import spring.jpa.service.interfaces.FichePresenceService;
 
@@ -53,7 +55,28 @@ public class FichePresenceServiceController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteFichePresence(@PathVariable("id") Long id) {
 		fichePresenceService.deleteFichePresence(id);
-		return new ResponseEntity<>("Fiche Presence is deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>(new DeleteResponse("Fiche Presence is deleted successfully"), HttpStatus.OK);
+	}
+
+	/*****************/
+	@GetMapping(value = "/{idEtudiant}/taux-presence-matiere/{idMatiere}", produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<?> getTauxPresenceMatiere(@PathVariable("idEtudiant") Long idEtudiant,
+			@PathVariable("idMatiere") Long idMatiere) {
+		return new ResponseEntity<>(Collections.singletonMap("tauxPresence",
+				fichePresenceService.consulterTauxPresenceParMatiere(idEtudiant, idMatiere)), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/historique-presence-groupe/{idGroupe}", produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<List<FichePresence>> getHistoriquePresenceParGroupe(@PathVariable("idGroupe") Long idGroupe) {
+		return new ResponseEntity<List<FichePresence>>(
+				fichePresenceService.consulterHistoriquePresenceParGroupe(idGroupe), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/historique-presence-etudiant/{idEtudiant}", produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<List<FichePresence>> getHistoriquePresenceParEtudiant(
+			@PathVariable("idEtudiant") Long idEtudiant) {
+		return new ResponseEntity<List<FichePresence>>(
+				fichePresenceService.consulterHistoriquePresenceParEtudiant(idEtudiant), HttpStatus.OK);
 	}
 
 }

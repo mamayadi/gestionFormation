@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import spring.jpa.model.Admin;
@@ -65,13 +64,13 @@ public class InitDb implements CommandLineRunner {
 			listFichePresence.add(fichePresence);
 
 			// Admin : Formateur
-			adminService.assignerGroupeAuFormateur(groupe.getId(), formateur.getId());
-			adminService.assignerMatiereAuFormateur(matiere.getId(), formateur.getId());
-			adminService.assignerGroupeAuEtudiant(groupe.getId(), etudiant.getId());
-			adminService.assignerMatiereAuGroupe(matiere.getId(), groupe.getId());
-			adminService.ajoutFichePresenceAuSeance(fichePresence, seance.getId());
-			adminService.ajouterNoteAuEtudiant(note, etudiant.getId());
-			//adminService.ajoutSeancePourMatiere(seance, matiere.getId());
+			formateurService.assignerGroupeAuFormateur(formateur.getId(), groupe.getId());
+			formateurService.assignerMatiereAuFormateur(formateur.getId(), matiere.getId());
+			etudiantService.assignerGroupeAuEtudiant(groupe.getId(), etudiant.getId());
+			groupeService.assignerMatiereAuGroupe(groupe.getId(), matiere.getId());
+			seanceService.ajoutFichePresenceAuSeance(seance.getId(), fichePresence);
+			etudiantService.ajouterNoteAuEtudiant(note, etudiant.getId());
+			// adminService.ajoutSeancePourMatiere(seance, matiere.getId());
 
 			// Formateur
 //			formateurService.addSeancePourMatiere(matiere, seance);

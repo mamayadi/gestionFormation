@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -25,6 +26,7 @@ public class Seance {
 	private Double duree;
 	private String description;
 	@ManyToOne
+	@JsonIgnoreProperties(value = { "listSeance", "groupe" })
 	private Matiere matiere;
 	@OneToMany
 	private List<FichePresence> listFichePresence;

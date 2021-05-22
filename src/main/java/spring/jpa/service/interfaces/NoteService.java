@@ -14,4 +14,8 @@ public interface NoteService {
 	public abstract Note updateNote(Long id, Note note);
 
 	public abstract void deleteNote(Long id);
+
+	public abstract Note addUpdateNote(Note note);
+
+	public abstract Note consulterMoyenneEtudiantParMatiere(Long idEtudiant, Long idMatiere);
 }

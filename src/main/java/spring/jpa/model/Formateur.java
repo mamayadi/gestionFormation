@@ -18,6 +18,10 @@ import spring.jpa.enums.Role;
 @Entity
 @DiscriminatorValue("formateur")
 public class Formateur extends Personne {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	@JsonProperty("id")

@@ -18,6 +18,10 @@ import spring.jpa.enums.Role;
 @Entity
 @DiscriminatorValue("etudiant")
 public class Etudiant extends Personne {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	@JsonProperty("id")

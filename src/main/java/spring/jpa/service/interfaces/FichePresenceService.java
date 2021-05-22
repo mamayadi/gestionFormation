@@ -14,4 +14,10 @@ public interface FichePresenceService {
 	public abstract FichePresence updateFichePresence(Long id, FichePresence fichePresence);
 
 	public abstract void deleteFichePresence(Long id);
+
+	public abstract List<FichePresence> consulterHistoriquePresenceParGroupe(Long groupeId);
+
+	public abstract List<FichePresence> consulterHistoriquePresenceParEtudiant(Long etudiantId);
+
+	public abstract double consulterTauxPresenceParMatiere(Long idEtudiant, Long idMatiere);
 }

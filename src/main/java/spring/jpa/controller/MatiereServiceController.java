@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import spring.jpa.enums.DeleteResponse;
 import spring.jpa.model.Matiere;
+import spring.jpa.model.Seance;
 import spring.jpa.service.interfaces.MatiereService;
 
 @RestController
@@ -51,6 +53,20 @@ public class MatiereServiceController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteMatiere(@PathVariable("id") Long id) {
 		matiereService.deleteMatiere(id);
-		return new ResponseEntity<>("Matiere is deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>(new DeleteResponse("Matiere is deleted successfully"), HttpStatus.OK);
 	}
+
+	/***************************/
+	@GetMapping(value = "/list-matiere-groupe/{idGroupe}", produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<List<Matiere>> getMatieresParGroupe(@PathVariable("idGroupe") Long idGroupe) {
+		return new ResponseEntity<List<Matiere>>(matiereService.getListMatiereParGroupe(idGroupe), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "{idMatiere}/add-seance", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Matiere> createSeanceMatiere(@PathVariable("idMatiere") Long idMatiere,
+			@RequestBody Seance seance) {
+		return new ResponseEntity<Matiere>(matiereService.ajoutSeancePourMatiere(idMatiere, seance),
+				HttpStatus.CREATED);
+	}
+
 }

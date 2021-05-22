@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import spring.jpa.enums.DeleteResponse;
 import spring.jpa.model.Formateur;
 import spring.jpa.service.interfaces.FormateurService;
 
@@ -50,6 +51,21 @@ public class FormateurServiceController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteFormateur(@PathVariable("id") Long id) {
 		formateurService.deleteFormateur(id);
-		return new ResponseEntity<>("Formateur is deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>(new DeleteResponse("Formateur is deleted successfully"), HttpStatus.OK);
+	}
+
+	/**********************/
+	@PostMapping(value = "/{idFormateur}/assigne-groupe/{idGroupe}")
+	public ResponseEntity<Formateur> assignerGroupeAuFormateur(@PathVariable("idFormateur") Long idFormateur,
+			@PathVariable("idGroupe") Long idGroupe) {
+		return new ResponseEntity<Formateur>(formateurService.assignerGroupeAuFormateur(idGroupe, idFormateur),
+				HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/{idFormateur}/assigne-matiere/{idMatiere}")
+	public ResponseEntity<Formateur> assignerMatiereAuFormateur(@PathVariable("idFormateur") Long idFormateur,
+			@PathVariable("idMatiere") Long idMatiere) {
+		return new ResponseEntity<Formateur>(formateurService.assignerMatiereAuFormateur(idMatiere, idFormateur),
+				HttpStatus.OK);
 	}
 }

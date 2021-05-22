@@ -18,6 +18,7 @@ public class Note {
 	private Double noteDS;
 	private Double moyenne;
 	@OneToOne
+	@JsonIgnoreProperties(value = { "listSeance", "groupe" })
 	private Matiere matiere;
 	@OneToOne
 	@JsonIgnoreProperties(value = { "groupe", "listNote" })

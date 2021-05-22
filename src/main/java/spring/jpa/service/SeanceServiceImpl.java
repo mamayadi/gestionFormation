@@ -89,21 +89,21 @@ public class SeanceServiceImpl implements SeanceService {
 			for (FichePresence fichePresence : seance.getListFichePresence()) {
 				FichePresence savedFiche = fichePresenceRepos.save(fichePresence);
 				updatedListFiche.add(savedFiche);
-				if(!(consulterTauxPresenceParMatiere(savedFiche.getEtudiant().getId(), matiere.getId())>20)) {
+				if (!(consulterTauxPresenceParMatiere(savedFiche.getEtudiant().getId(), matiere.getId()) > 20)) {
 					Etudiant etudiant = savedFiche.getEtudiant();
 					Note foundedNote = null;
 					for (Note note : etudiant.getListNote()) {
-						if(note.getMatiere().getId() == matiere.getId()) {
+						if (note.getMatiere().getId() == matiere.getId()) {
 							foundedNote = note;
 						}
 					}
-					Note savedNote= null;
-					if(foundedNote != null) {
+					Note savedNote = null;
+					if (foundedNote != null) {
 						foundedNote.setNoteDC(0.0);
 						foundedNote.setNoteDS(0.0);
-						savedNote= noteRepos.save(foundedNote);
+						savedNote = noteRepos.save(foundedNote);
 					} else {
-						 savedNote= noteRepos.save(new Note(0.0,0.0));
+						savedNote = noteRepos.save(new Note(0.0, 0.0));
 					}
 					etudiant.addNote(savedNote);
 					etudiantRepos.save(etudiant);
@@ -118,11 +118,11 @@ public class SeanceServiceImpl implements SeanceService {
 		Seance seance = getSeanceById(id);
 		seanceRepos.delete(seance);
 	}
-	
+
 	/******* End CRUD Seance ******/
+
 	public double consulterTauxPresenceParMatiere(Long id, Long matiereId) {
-		Etudiant etudiant = etudiantRepos.findById(id)
-				.orElseThrow(() -> new NotFoundException("Etudiant not found!"));
+		Etudiant etudiant = etudiantRepos.findById(id).orElseThrow(() -> new NotFoundException("Etudiant not found!"));
 		Matiere foundedMatiere = matiereRepos.findById(matiereId)
 				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
 		List<Seance> listSeance = foundedMatiere.getListSeance();
@@ -131,10 +131,34 @@ public class SeanceServiceImpl implements SeanceService {
 			List<FichePresence> listFiche = seance.getListFichePresence();
 			for (FichePresence fichePresence : listFiche) {
 				if (fichePresence.isPresence() && fichePresence.getEtudiant().getId() == etudiant.getId()) {
-					total+=1;
+					total += 1;
 				}
 			}
 		}
-		return total *100/foundedMatiere.getListSeance().size();
+		return total * 100 / foundedMatiere.getListSeance().size();
+	}
+
+	@Override
+	public Seance ajoutFichePresenceAuSeance(Long idSeance, FichePresence fichePresence) {
+		Seance foundedSeance = getSeanceById(idSeance);
+		FichePresence savedFichePresence = fichePresenceRepos.save(fichePresence);
+		foundedSeance.addFichePresence(savedFichePresence);
+		return seanceRepos.save(foundedSeance);
+	}
+
+	@Override
+	public Seance affecterFichePresencePourSeance(Long idSeance, List<FichePresence> listFichePresence) {
+		Seance foundedSeance = getSeanceById(idSeance);
+		foundedSeance.setListFichePresence(listFichePresence);
+		return seanceRepos.save(foundedSeance);
+
+	}
+
+	@Override
+	public List<Seance> consulterListSeancePourMatiere(Long idMatiere) {
+		Matiere foundedMatiere = matiereRepos.findById(idMatiere)
+				.orElseThrow(() -> new NotFoundException("Matiere not found!"));
+		return foundedMatiere.getListSeance();
+
 	}
 }

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import spring.jpa.enums.DeleteResponse;
 import spring.jpa.model.Etudiant;
+import spring.jpa.model.Note;
 import spring.jpa.service.interfaces.EtudiantService;
 
 @RestController
@@ -51,7 +53,21 @@ public class EtudiantServiceController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteEtudiant(@PathVariable("id") Long id) {
 		etudiantService.deleteEtudiant(id);
-		return new ResponseEntity<>("Etudiant is deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>(new DeleteResponse("Etudiant is deleted successfully"), HttpStatus.OK);
+	}
+
+	/*******************/
+	@PostMapping(value = "/{etudiantId}/add-groupe/{groupeId}", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Etudiant> addGroupeEtudiant(@PathVariable("etudiantId") Long etudiantId,
+			@PathVariable("groupeId") Long groupeId) {
+		return new ResponseEntity<Etudiant>(etudiantService.assignerGroupeAuEtudiant(groupeId, etudiantId),
+				HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/{etudiantId}/add-note", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Etudiant> addNoteEtudiant(@PathVariable("etudiantId") Long etudiantId,
+			@RequestBody Note note) {
+		return new ResponseEntity<Etudiant>(etudiantService.ajouterNoteAuEtudiant(note, etudiantId), HttpStatus.OK);
 	}
 
 }

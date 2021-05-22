@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import spring.jpa.enums.DeleteResponse;
 import spring.jpa.model.Groupe;
 import spring.jpa.service.interfaces.GroupeService;
 
@@ -51,6 +52,14 @@ public class GroupeServiceController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteGroupe(@PathVariable("id") Long id) {
 		groupeService.deleteGroupe(id);
-		return new ResponseEntity<>("Groupe is deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>(new DeleteResponse("Groupe is deleted successfully"), HttpStatus.OK);
+	}
+
+	/*********************/
+	@PostMapping(value = "/{idGroupe}/add-matiere/{idMatiere}", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Groupe> createGroupe(@PathVariable("idGroupe") Long idGroupe,
+			@PathVariable("idMatiere") Long idMatiere) {
+		return new ResponseEntity<Groupe>(groupeService.assignerMatiereAuGroupe(idGroupe, idMatiere),
+				HttpStatus.CREATED);
 	}
 }
