@@ -55,20 +55,24 @@ public class InitDb implements CommandLineRunner {
 			matiere.setGroupe(groupe);
 			matiere = matiereService.updateMatiere(matiere.getId(), matiere);
 			Seance seance = seanceService.createSeance(new Seance(new Date(), 3.0, matiere, "Seance description test"));
+			Seance seance2 = seanceService.createSeance(new Seance(new Date(), 3.0, matiere, "Seance description test 22"));
 			Note note = noteService.createNote(new Note(16.0, 17.0));
 			note.setEtudiant(etudiant);
 			note.setMatiere(matiere);
 			note = noteService.updateNote(note.getId(), note);
-			FichePresence fichePresence = fichePresenceService.createFichePresence(new FichePresence(etudiant, true));
+			FichePresence fichePresence1 = fichePresenceService.createFichePresence(new FichePresence(etudiant, true));
+			FichePresence fichePresence2 = fichePresenceService.createFichePresence(new FichePresence(etudiant, false));
 			List<FichePresence> listFichePresence = new ArrayList<FichePresence>();
-			listFichePresence.add(fichePresence);
+			listFichePresence.add(fichePresence1);
+			listFichePresence.add(fichePresence2);
 
 			// Admin : Formateur
 			formateurService.assignerGroupeAuFormateur(formateur.getId(), groupe.getId());
 			formateurService.assignerMatiereAuFormateur(formateur.getId(), matiere.getId());
 			etudiantService.assignerGroupeAuEtudiant(groupe.getId(), etudiant.getId());
 			groupeService.assignerMatiereAuGroupe(groupe.getId(), matiere.getId());
-			seanceService.ajoutFichePresenceAuSeance(seance.getId(), fichePresence);
+			seanceService.ajoutFichePresenceAuSeance(seance.getId(), fichePresence1);
+			seanceService.ajoutFichePresenceAuSeance(seance2.getId(), fichePresence2);
 			etudiantService.ajouterNoteAuEtudiant(note, etudiant.getId());
 			// adminService.ajoutSeancePourMatiere(seance, matiere.getId());
 
